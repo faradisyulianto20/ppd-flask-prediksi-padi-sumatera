@@ -1,0 +1,21 @@
+{% extends "base.html" %}{% block content %}
+<div class="card shadow-sm"><div class="card-body">
+<form method="post" action="{{ url_for('result') }}">
+ <div class="form-row">
+  <div class="form-group col-md-6"><label>Provinsi</label>
+   <select name="provinsi" class="form-control">{% for p in provinsi %}<option>{{ p }}</option>{% endfor %}</select></div>
+  <div class="form-group col-md-6"><label>Model</label>
+   <select name="model" class="form-control">{% for m in models %}<option value="{{ m }}" {% if m==best %}selected{% endif %}>{{ m }}{% if m==best %} (terbaik){% endif %}</option>{% endfor %}</select></div>
+ </div>
+ <div class="form-row">
+  <div class="form-group col-md-4"><label>Tahun</label><input type="number" name="tahun" value="2021" class="form-control" required></div>
+  <div class="form-group col-md-4"><label>Luas Panen (ha)</label><input type="number" step="any" name="luas" value="{{ rng['Luas Panen']['median']|round|int }}" class="form-control" required></div>
+  <div class="form-group col-md-4"><label>Curah hujan (mm)</label><input type="number" step="any" name="hujan" value="{{ rng['Curah hujan']['median']|round|int }}" class="form-control" required></div>
+ </div>
+ <div class="form-row">
+  <div class="form-group col-md-6"><label>Kelembapan (%)</label><input type="number" step="any" name="lembap" value="{{ rng['Kelembapan']['median']|round(1) }}" class="form-control" required></div>
+  <div class="form-group col-md-6"><label>Suhu rata-rata (°C)</label><input type="number" step="any" name="suhu" value="{{ rng['Suhu rata-rata']['median']|round(1) }}" class="form-control" required></div>
+ </div>
+ <button class="btn btn-success">Prediksi</button> <button type="reset" class="btn btn-secondary">Reset</button>
+</form></div></div>
+{% endblock %}

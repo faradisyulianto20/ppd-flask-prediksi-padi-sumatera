@@ -1,0 +1,17 @@
+{% extends "base.html" %}{% block content %}
+<div class="card shadow-sm mb-4"><div class="card-body text-center">
+ <div class="text-muted">Prediksi produksi padi – {{ provinsi }}, {{ vals[0]|int }} ({{ model_name }})</div>
+ <h1 class="display-4 text-success">{{ '{:,.0f}'.format(pred) }} ton</h1>
+ {% if model_name == 'MLP' %}<div class="alert alert-warning">MLP memiliki R² negatif pada data uji; hasil tidak dapat diandalkan.</div>{% endif %}
+ <table class="table table-sm w-auto mx-auto text-left"><tbody>
+  <tr><td>Luas Panen</td><td>{{ '{:,.0f}'.format(vals[1]) }} ha</td></tr>
+  <tr><td>Curah hujan</td><td>{{ vals[2] }} mm</td></tr>
+  <tr><td>Kelembapan</td><td>{{ vals[3] }} %</td></tr>
+  <tr><td>Suhu rata-rata</td><td>{{ vals[4] }} °C</td></tr></tbody></table>
+ <a href="{{ url_for('index') }}" class="btn btn-outline-success">&larr; Prediksi lagi</a>
+</div></div>
+<div class="card shadow-sm"><div class="card-header">Perbandingan performa model (data uji)</div>
+<table class="table table-sm mb-0"><thead><tr><th>Model</th><th>MAE</th><th>RMSE</th><th>R²</th><th>Pearson r</th></tr></thead><tbody>
+{% for m in metrics %}<tr{% if m['Model']==model_name %} class="table-success"{% endif %}><td>{{ m['Model'] }}</td><td>{{ '{:,.0f}'.format(m['MAE']) }}</td><td>{{ '{:,.0f}'.format(m['RMSE']) }}</td><td>{{ '%.4f'|format(m['R2']) }}</td><td>{{ '%.4f'|format(m['Pearson r']) }}</td></tr>{% endfor %}
+</tbody></table></div>
+{% endblock %}
